@@ -1,6 +1,6 @@
 # gentriNet
-Tutorials and sources to reproduce results obtained during my 2017 summer internship at uOttawa
-(WIP)
+
+## If you have any question, please [open an issue](https://github.com/azarz/gentriNet/issues) and I'll try to answer as quickly as possible.
 
 ## Installation
 
@@ -41,10 +41,26 @@ To process GIST vectors the way I did in the Python scripts you will find in thi
 
 ### Google StreetView
 
-The Google API usually doesn't need any installation, but since we want historical imagery, we use this module: https://github.com/robolyst/streetview. To use it, simply place the folder containing the \_\_init\_\_.py in the same directory as your script, and import it using the line 
+The Google API usually doesn't need any installation, but since we want historical imagery, we use this module: https://github.com/robolyst/streetview. 
+
+In order to make it work properly in our case, there is a small change to apply to the __init.py__ file.
+Change line 56
+```python
+def panoids(lat, lon, closest=False, disp=False):
+```
+to
+```python
+def panoids(lat, lon, closest=True, disp=False):
+```
+
+To use it, simply place the folder containing the \_\_init\_\_.py in the same directory as your script, and import it using the line 
 ```python
 import streetview
 ```
+
+### GDAL/OGR
+Install it using the wheel from
+http://www.lfd.uci.edu/~gohlke/pythonlibs/#gdal
 
 ### Keras and tensorflow
 
@@ -133,3 +149,10 @@ Processing can take up to 30 hours, even on a Tesla K80.
 The output of the classification is a set of 64 files corresponding to the classification results. In order to extract only the positive ones (which are the ones we're interested in) and fuse them in a single file, use the __to\_positives.py__ script. The functions you should use are __res2pos\_multi()__ and __multipos2singlepos()__. Unfortunately, I hardcoded the paths I used on my computer so if you're using another one, maybe you'll have to change them.
 
 The resulting file ("positives\_0-63.txt" by default) is a concatenation of all the positives detected by the model. You can load it in any GIS (I used QGIS) with the fist field as Y coordinates and second field as X coordinates in WGS84.
+
+I personnaly had way to many false positives on my first go, these are the steps I followed to try and overcome this problem: https://github.com/azarz/gentriNet/blob/master/Iterative_models.md
+
+
+
+## Suggestions to improve the results
+https://github.com/azarz/gentriNet/blob/master/suggestions.md
